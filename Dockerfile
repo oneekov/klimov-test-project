@@ -28,7 +28,6 @@ RUN adduser \
 USER appuser
 
 COPY ./app /app
-
-EXPOSE 8000
+COPY ./front /app/front
 
 CMD ["python", "app.py"]

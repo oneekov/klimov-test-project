@@ -46,7 +46,7 @@ def register():
         session.add(created_user)
         session.commit()
     
-    return {'status': 'ok', 'token': create_access_token(identity=created_user.id)}, 201
+    return {'status': 'ok', 'token': create_access_token(identity=str(created_user.id))}, 201
 
 @auth.route('/login', methods=['POST'])
 def login():
@@ -66,6 +66,6 @@ def login():
         return {'status': 'error', 'message': 'user not exist'}, 404
     
     if bcrypt.checkpw(password.encode('utf-8'), user.password_hash.encode('utf-8')):
-        return {'status': 'ok', 'token': create_access_token(identity=user.id)}
+        return {'status': 'ok', 'token': create_access_token(identity=str(user.id))}
     
     return {'status': 'error', 'message': 'bad creds provided'}, 401
