@@ -6,8 +6,8 @@ services:
     ports:
       - ${PORT}:${PORT}
     stop_signal: SIGINT
-    volumes:
-      - ./app:/app
+    # volumes:
+    #   - ./app:/app
   db:
     image: postgres:16
     volumes:
