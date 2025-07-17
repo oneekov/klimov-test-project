@@ -18,11 +18,21 @@ body {
 
 .logo {
     width: 33%;
-    height: 40%;
+    height: auto;
+}
+
+
+
+.block1 {
+    background-color: black;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
 }
 
 .container1{
-    background-color: rgb(6, 206, 139);
+    background-color: rgb(244, 247, 246);
     width: 45%;
     max-width: 50%;
     text-align: center;
@@ -38,7 +48,7 @@ body {
     margin: 1.4rem auto;
     width: 100%;
     height: 50px;
-    background-color: rgb(15, 136, 235);
+    background-color: #9c98ad;
 }
 .eyyy p{
     display: grid;
