@@ -38,7 +38,9 @@ def send_results():
             human_points=data['results']['human'],
             sign_points=data['results']['sign_system'],
             image_points=data['results']['image']
-        ) # FIXME: подозреваю, что можно загонять pydantic модель в SQLAlchemy напрямую, но нужно копаться в моделях...
+        ) # notFIXME: подозреваю, что можно загонять pydantic модель в SQLAlchemy напрямую, но нужно копаться в моделях...
+        # upd: ладно, пофиг
+        session.add(result)
         session.commit()
 
     return {'status': 'ok', 'message': 'results received successfully'}, 200

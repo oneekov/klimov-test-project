@@ -3,6 +3,8 @@
 
 **Все методы API имеют общий эндпоинт /api/**
 ## POST /api/auth/register
+Регистрация
+
 Тело запроса:
 ```json
 {
@@ -18,6 +20,7 @@
 }
 ```
 Ответ:
+
 201:
 ```json
 {"status": "ok", "token": "123abc_access_token_here_123abc"}
@@ -31,11 +34,14 @@
 {"status": "error", "message": "account already exist"} // сверка по username и email
 ```
 ## POST /api/auth/login
+Логин
+
 Тело запроса:
 ```json
 {"username": "johndoe", "password": "123123123"}
 ```
 Ответ:
+
 200:
 ```json
 {"status": "ok", "token": "123abc..."}
@@ -53,7 +59,10 @@
 {"status": "error", "message": "user not exist"}
 ```
 ## POST /api/send_results
+Отправка результатов
+
 Требует заголовка Authorization: Bearer Token
+
 Тело запроса:
 ```json
 {
@@ -67,6 +76,7 @@
 }
 ```
 Ответ:
+
 200:
 ```json
 {"status": "ok"}
@@ -74,4 +84,119 @@
 400:
 ```json
 {"status": "error", "message": "error here"}
+```
+## GET /api/admin/users/
+Получение всех пользователей (не админов)
+
+Требует заголовка Authorization: Bearer Token и наличия is_admin/is_superadmin у пользователя
+Ответ:
+
+200:
+```json
+{
+    "users": [
+        {
+            "age": 21,
+            "contact_email": "123@gmail.com",
+            "contact_number": "+79871234567",
+            "grade_letter": "A",
+            "grade_number": 9,
+            "id": 2,
+            "is_admin": false,
+            "is_super_admin": false,
+            "name": "Ivan",
+            "patronymic": "Ivanovich",
+            "school": "School №3",
+            "sex": "male",
+            "surname": "Ivanov"
+        },
+        {
+            // и другие...
+        }
+    ]
+}
+```
+403 (нет прав):
+```json
+{"status": "error", "message": "access denied"}
+```
+## GET /api/admin/admins
+Получение всех админов
+
+Требует заголовка Authorization: Bearer Token и наличия is_superadmin у пользователя
+Ответ:
+
+200:
+```json
+{
+    "admins": [
+        { // !!! Все значения, кроме id, is_admin, is_super_admin могут быть null !!!
+            "age": 21,
+            "contact_email": "123@gmail.com",
+            "contact_number": "+79871234567",
+            "grade_letter": "A",
+            "grade_number": 9,
+            "id": 2,
+            "is_admin": true,
+            "is_super_admin": false,
+            "name": "Ivan",
+            "patronymic": "Ivanovich",
+            "school": "School №3",
+            "sex": "male",
+            "surname": "Ivanov"
+        },
+        {
+            // и другие...
+        }
+    ]
+}
+```
+403 (нет прав):
+```json
+{"status": "error", "message": "access denied"}
+```
+## GET /api/admin/answers/
+Тело запроса:
+```
+http://site_url/api/admin/answers/?school=52 школа&grade_number=9&profession_type=nature
+
+# school - точное название школы
+# grade_number - номер класса
+# profession_type - тип профессии; возможные значения: ['nature', 'tech', 'human', 'sign_system', 'image']
+```
+Ответ:
+
+200:
+```json
+{
+    "answers": [
+        {
+            "answer_id": 1,
+            "human_points": 5,
+            "image_points": -5,
+            "nature_points": -10,
+            "sign_points": 2,
+            "tech_points": 10,
+            "user": {
+                "age": 21,
+                "contact_email": "123@gmail.com",
+                "contact_number": "+79871234567",
+                "grade_letter": "A",
+                "grade_number": 9,
+                "id": 2,
+                "is_admin": false,
+                "is_super_admin": false,
+                "name": "Ivan",
+                "patronymic": "Ivanovich",
+                "school": "School №3",
+                "sex": "male",
+                "surname": "Ivanov"
+            }
+        }
+    ]
+}
+```
+403 (нет прав):
+```json
+{"status": "error", "message": "access denied"}
 ```
