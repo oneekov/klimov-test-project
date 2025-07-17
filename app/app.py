@@ -16,7 +16,7 @@ def serve_file(filename):
     return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'front'), filename)
 
 @app.route('/healthz')
-async def healthz():
+def healthz():
     return {'status': 'ok'}
 
 # @app.route('/test/', defaults={'id': None})

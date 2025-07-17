@@ -15,6 +15,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      back:
+      default:
   db:
     image: postgres:16
     volumes:
@@ -34,3 +37,12 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  back:
+    driver: bridge
+    enable_ipv6: true
+    internal: true
+
+  default:
+    driver: bridge
