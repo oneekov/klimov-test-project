@@ -1,3 +1,5 @@
+from sqlalchemy import text
+
 from config import *
 from api import api
 
@@ -19,8 +21,9 @@ async def test(id):
 
 if __name__ == '__main__':
     with db.session() as session:
-        if not (session.execute(select(exists().where(Admin.admin_id==1)))).scalar():
-            root = Admin(admin_id=1, username=ROOT_USER, password_hash=ROOT_PASSWORD_HASH, is_super_admin=True)
+        if not (session.execute(select(exists().where(User.id==1)))).scalar():
+            root = User(id=1, username=ROOT_USER, password_hash=ROOT_PASSWORD_HASH, is_super_admin=True)
+            session.execute(text("SELECT setval('users_id_seq', 1)"))
             session.add(root)
             session.commit()
     app.run(host=HOST, port=PORT, debug=True)

@@ -1,49 +1,68 @@
-from pydantic import BaseModel, field_validator, model_validator
-from typing import List
+import re
+from enum import Enum
+from typing import Optional, Union
+from pydantic import BaseModel, validator, EmailStr, field_validator
 
-class Person(BaseModel):
-    sex: str
+# Определим enum для sex
+class SexEnum(str, Enum):
+    male = "male"
+    female = "female"
+
+# Pydantic модель для валидации входных данных
+class UserInput(BaseModel):
+    username: str
+    password: str
+    school: Optional[str] = None
+    grade: list[Union[int, str]]
+    sex: SexEnum
     age: int
-    full_name: List[str]
+    full_name: list[str]
+    email: EmailStr
+    number: Optional[str] = None
 
-    @field_validator("sex")
-    def validate_sex(cls, value):
-        if value not in ("male", "female"):
-            raise ValueError("wrong sex (no LGBTQ+)")
-        return value
+    @validator('username')
+    def validate_username(cls, v):
+        if len(v) > 32:
+            raise ValueError('bad username provided (max 32 characters)')
+        return v
 
-    @field_validator("age")
-    def validate_age(cls, value):
-        if not (0 <= value <= 120):
-            raise ValueError("person is too young/old")
-        return value
+    @validator('password')
+    def validate_password(cls, v):
+        if len(v) < 8:
+            raise ValueError('bad password provided (min 8 characters)')
+        return v
 
-    @field_validator("full_name")
-    def validate_full_name(cls, value):
-        if len(value) != 3:
-            raise ValueError("bad full name provided")
-        for part in value:
-            if not isinstance(part, str) or len(part) > 40:
-                raise ValueError("bad full name provided")
-        return value
+    @validator('grade')
+    def validate_grade(cls, v):
+        if len(v) != 2:
+            raise ValueError('bad grade format, correct [grade_number, grade_letter]')
+        grade_number, grade_letter = v
+        if not isinstance(grade_number, int) or grade_number < 1 or grade_number > 11:
+            raise ValueError('bad grade number provided (1-11)')
+        if not isinstance(grade_letter, str) or len(grade_letter) != 1:
+            raise ValueError('bad grade letter provided (correct: single character)')
+        return v
 
+    @validator('full_name')
+    def validate_full_name(cls, v):
+        if len(v) != 3:
+            raise ValueError('wrong full name format, correct [surname, name, patronymic]')
+        for part in v:
+            if len(part) > 40:
+                raise ValueError('length overflow (max 40) in full name part')
+        return v
 
-class Results(BaseModel):
-    nature: int
-    tech: int
-    human: int
-    sign_system: int
-    image: int
+    @validator('age')
+    def validate_age(cls, v):
+        if v < 0 or v > 120:
+            raise ValueError('bad age provided (0-120)')
+        return v
 
-    @model_validator(mode="after")
-    def validate_results_range(self):
-        for field_name in self.model_fields:
-            value = getattr(self, field_name)
-            if not (-20 <= value <= 20):
-                raise ValueError(f"bad results provided")
-        return self
-
-
-class Result(BaseModel):
-    person: Person
-    results: Results
+    @validator('number')
+    def validate_number(cls, v):
+        if v is None:
+            return v
+        # Пример валидации формата номера: +79871234567
+        if not v.startswith('+7') or not v[1:].isdigit() or len(v) != 12:
+            raise ValueError('bad number format (correct +7XXXXXXXXXX)')
+        return v
