@@ -1,53 +1,43 @@
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request
 from pydantic import ValidationError
 
 from admin import admin
+from auth import auth
 from config import *
-from validators import Result
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
 api.register_blueprint(admin)
-
-# @api.route('/check_test/', defaults={'id': None})
-# @api.route('/check_test/<int:id>')
-# async def check_test_existence(id=None):
-#     if id:
-#         if id > 2**32:
-#             return {'status': 'error', 'message': 'bad id provided'}, 400
-        
-#         async with db.session() as session:
-#             if (await session.execute(select(exists().where(Test.test_id==id)))).scalar():
-#                 return {'status': 'ok'}, 200
-
-#             return {'status': 'error', 'message': 'test not found'}, 404
-    
-#     return {'status': 'error', 'message': 'no id provided'}, 400
+api.register_blueprint(auth)
 
 @api.route('/send_results', methods=['POST'])
+@jwt_required()
 def send_results():
     data = request.json
     if not data:
         return {'status': 'error', 'message': 'data not provided'}, 400
     
-    try:
-        result = Result(**data)
-    except ValidationError as e:
-        return {'status': 'error', 'message': e.errors()[0]['msg']}, 400
+    if any(not key in data['results'] for key in ['nature', 'tech', 'human', 'sign_system', 'image']):
+        return {'status': 'error', 'message': 'not all data provided'}, 400
+    
+    for key, value in data['results'].items():
+        if not (-20 <= value <= 20):
+            return {"status": "error", "message": "bad results provided (range -20 - 20)"}, 400
+    
     
     with db.session() as session:
-        result = Answer(ip=request.remote_addr,
-                        user_agent=request.headers.get('User-Agent'),
-                        sex=SexEnum.FEMALE if result.person.sex else SexEnum.MALE,
-                        age=result.person.age,
-                        surname=result.person.full_name[0],
-                        name=result.person.full_name[1],
-                        patronymic=result.person.full_name[2],
-                        nature_points=result.results.nature,
-                        tech_points=result.results.tech,
-                        human_points=result.results.human,
-                        sign_points=result.results.sign_system,
-                        image_points=result.results.image
+        result = Answer(
+            ip=request.remote_addr,
+            user_agent=request.headers.get('User-Agent'),
+
+            user_id=get_jwt_identity(),
+            
+            nature_points=data['results']['nature'],
+            tech_points=data['results']['tech'],
+            human_points=data['results']['human'],
+            sign_points=data['results']['sign_system'],
+            image_points=data['results']['image']
         ) # FIXME: подозреваю, что можно загонять pydantic модель в SQLAlchemy напрямую, но нужно копаться в моделях...
         session.commit()
 
