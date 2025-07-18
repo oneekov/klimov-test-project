@@ -6,8 +6,8 @@ services:
     ports:
       - ${PORT}:${PORT}
     stop_signal: SIGINT
-    # volumes:
-    #   - ./app:/app
+    volumes:
+      - .:/app
     networks:
       back:
       default:
@@ -23,6 +23,7 @@ services:
       - PGDATABASE=$POSTGRES_DB
     networks:
       back:
+      default:
 
 volumes:
   postgres_data:

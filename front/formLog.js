@@ -8,9 +8,9 @@ document.getElementById('LogForm').addEventListener('submit', async (event) => {
     };
 
     try {
-        window.location.href = "./main.html"; 21
+        //window.location.href = "./main.html"; 
         // Отправляем POST-запрос
-        const response = fetch('localhost:80/api/auth/login', {
+        const response = fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' // Указываем тип данных
@@ -25,8 +25,9 @@ document.getElementById('LogForm').addEventListener('submit', async (event) => {
 
         const result = response.json(); // Парсим JSON-ответ
         document.getElementById('responseMessage').textContent = "Успешно! Ответ: " + JSON.stringify(result);
+
     } catch (error) {
-        console.error('Ошибка:', error);
+        //console.error('Ошибка:', error);
         document.getElementById('responseMessage').textContent = "Ошибка: " + error.message;
     }
 });
