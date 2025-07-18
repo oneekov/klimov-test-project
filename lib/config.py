@@ -3,8 +3,8 @@ from sqlalchemy import select, exists
 from flask import Flask
 import os
 
-from database import Database
-from models import *
+from lib.database import Database
+from lib.models import *
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'default_secret_key')
