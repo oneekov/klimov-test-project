@@ -1,6 +1,9 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_, not_, and_
-from flask import Blueprint, request
+from flask import Blueprint, request, send_file
+from datetime import datetime
+import pandas as pd
+import io
 
 from lib.config import *
 
@@ -89,7 +92,57 @@ def get_answers_excel():
         user = session.execute(select(User).where(User.id==int(get_jwt_identity()))).scalar()
         if not (user.is_admin or user.is_super_admin):
             return {'status': 'error', 'message': 'access denied'}, 403
-    # TODO: реализовать выгрузку в Excel
+        answers = session.query(Answer)
+        if school:
+            answers = answers.filter(Answer.school == school)
+        if grade_number:
+            answers = answers.filter(Answer.grade_number == grade_number)
+        if profession_type and profession_type in ['nature', 'tech', 'human', 'sign_system', 'image']:
+            main_field = getattr(User, profession_type)
+            other_fields = [getattr(User, f) for f in ['nature', 'tech', 'human', 'sign_system', 'image'] if f != profession_type]
+    
+            condition = and_(*[main_field > other for other in other_fields])
+            answers = answers.filter(condition)
+        
+        answers = answers.all()
+
+        formatted_answers = [i.__dict__ for i in answers]
+
+        for answer in formatted_answers:
+            user = session.execute(select(User).where(User.id==answer['user_id'])).scalar()
+            del answer['user_id']
+            answer['user'] = user.__dict__
+    
+    data = []
+    for answer in formatted_answers:
+        data.append({
+                "Фамилия": answer['user']['surname'],
+                "Имя": answer['user']['name'],
+                "Отчество": answer['user']['patronymic'],
+                "Класс": answer['user']['grade_number'],
+                "Школа": answer['user']['school'],
+                "Почта": answer['user']['contact_email'],
+                "Номер": answer['user']['contact_number'],
+                "Ч-П": answer['nature_points'],
+                "Ч-Т": answer['tech_points'],
+                "Ч-Ч": answer['human_points'],
+                "Ч-ЗС": answer['sign_points'],
+                "Ч-ИО": answer['image_points']
+        })
+    
+        df = pd.DataFrame(data)
+    excel_data = io.BytesIO()
+    with pd.ExcelWriter(excel_data, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False)
+
+    excel_data.seek(0)
+
+    return send_file(
+        excel_data,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        as_attachment=True,
+        download_name=f'Answers-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.xlsx'
+    )
 
 @admin.route('/admins/rights', methods=['PATCH'])
 def change_rights():

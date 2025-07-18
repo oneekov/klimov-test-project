@@ -39,9 +39,6 @@ def register():
 
             contact_email=user.email,
             contact_number=user.number,
-
-            sex=user.sex,
-            age=user.age
         )
         session.add(created_user)
         session.commit()
