@@ -2,9 +2,9 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request
 from pydantic import ValidationError
 
-from admin import admin
-from auth import auth
-from config import *
+from lib.admin import admin
+from lib.auth import auth
+from lib.config import *
 
 api = Blueprint('api', __name__, url_prefix='/api')
 

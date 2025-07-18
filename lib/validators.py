@@ -1,4 +1,3 @@
-import re
 from enum import Enum
 from typing import Optional, Union
 from pydantic import BaseModel, validator, EmailStr, field_validator

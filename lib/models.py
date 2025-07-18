@@ -1,4 +1,5 @@
-from sqlalchemy.ext.asyncio import AsyncAttrs
+# -*- coding: utf-8 -*-
+
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Text
 from sqlalchemy.orm import relationship
@@ -10,7 +11,7 @@ class SexEnum(str, enum.Enum):
     MALE = 'male'
     FEMALE = 'female'
 
-class Base(AsyncAttrs, DeclarativeBase):
+class Base(DeclarativeBase):
     __abstract__ = True
     __table_args__ = {'schema': 'klimov'}
 

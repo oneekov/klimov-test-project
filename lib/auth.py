@@ -4,8 +4,8 @@ from pydantic import ValidationError
 from sqlalchemy import or_
 import bcrypt
 
-from validators import UserInput
-from config import *
+from lib.validators import UserInput
+from lib.config import *
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 

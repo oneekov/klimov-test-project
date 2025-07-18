@@ -27,7 +27,6 @@ RUN adduser \
 # Switching to it
 USER appuser
 
-COPY ./app /app
-COPY ./front /app/front
+COPY . /app
 
-CMD ["python", "app.py"]
+CMD ["./docker-entrypoint.sh"]

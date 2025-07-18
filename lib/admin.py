@@ -2,7 +2,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from sqlalchemy import or_, not_, and_
 from flask import Blueprint, request
 
-from config import *
+from lib.config import *
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
