@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЗЕЛЕНАЯ ДОЛИНА</title>
+    <style>
+        :root {
+            --primary-green: #ffffff;
+            --light-green: #518f4f;
+            --hover-green: #a0d3a5;
+            --dark-green: #1b5e20;
+            --white: #518f4f;
+            --border-color: #266330;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            background-color: var(--primary-green);
+            color: var(--white);
+            padding: 5% 0 2.5%;
+            border-top: 3px solid var(--border-color);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .footer-container {
+            max-width: 90%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3%;
+            padding: 0 2%;
+        }
+        
+        .footer-column {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .footer-logo {
+            margin-bottom: 5%;
+            text-align: center;
+        }
+        
+        .logo-img {
+            height: 5vw;
+            min-height: 70px;
+            max-height: 100px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .footer-title {
+            font-size: 1.1vw;
+            font-weight: 600;
+            margin-bottom: 6%;
+            letter-spacing: 1px;
+            position: relative;
+            text-transform: uppercase;
+        }
+        
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40px;
+            height: 2px;
+            background: var(--light-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 4%;
+        }
+        
+        .footer-links li a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9vw;
+            transition: all 0.3s ease;
+            display: inline-block;
+            padding: 1% 0;
+        }
+        
+        .footer-links li a:hover {
+            color: var(--hover-green);
+            transform: translateX(5px);
+        }
+        
+        .footer-contact p {
+            margin: 0 0 4%;
+            font-size: 0.9vw;
+        }
+        
+        .footer-contact a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-contact a:hover {
+            color: var(--hover-green);
+        }
+        
+        .footer-legal {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding-top: 3%;
+            margin-top: 3%;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.8vw;
+            color: var(--light-green);
+        }
+        
+        .footer-description {
+            color: var(--light-green);
+            margin-top: 4%;
+            font-size: 0.9vw;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 5%;
+            }
+            
+            .footer-title {
+                font-size: 3vw;
+                margin-bottom: 5%;
+            }
+            
+            .footer-links li a,
+            .footer-contact p,
+            .footer-description {
+                font-size: 2.5vw;
+            }
+            
+            .logo-img {
+                height: 10vw;
+            }
+            
+            .footer-legal {
+                font-size: 2vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <img src="Лого-ЗД-2048x553.png" alt="АГРОПРОМЫШЛЕННЫЙ ХОЛДИНГ ЗЕЛЕНАЯ ДОЛИНА" class="logo-img">
+                </div>
+                <p class="footer-description">
+                    Лидер агропромышленного комплекса с 1998 года
+                </p>
+            </div>
+            
+            <div class="footer-column">
+                <h3 class="footer-title">Контакты</h3>
+                <div class="footer-contact">
+                    <p><a href="mailto:company@zdmail.ru">company@zdmail.ru</a></p>
+                    <p><a href="tel:+74722732390">+7 (4722) 73-23-90</a></p>
+                    <p><a href="tel:+74722732392">+7 (4722) 73-23-92</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3 class="footer-title">Адрес</h3>
+                <address style="font-style: normal; color: var(--white); font-size: 0.9vw;">
+                    Россия, г. Белгород,<br>
+                    Проспект Славы, дом 28
+                </address>
+            </div>
+            
+            <div class="footer-column">
+                <h3 class="footer-title">Информация</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Наша команда</a></li>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Список ресурсов</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-legal">
+                © 2025 Агропромышленный холдинг "Зеленая Долина". Все права защищены.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

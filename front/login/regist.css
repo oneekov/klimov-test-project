@@ -1,0 +1,332 @@
+ 
+ *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    width: 50;
+}
+body {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, 
+        #2ecc71,      /* зелёный */
+        #3498db,      /* синий */
+        #1abc9c      /* бирюзовый (промежуточный между зелёным и синим) */
+    );
+}
+
+.logo {
+    width: 20%;
+    height: auto;
+}
+
+.custom-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.block1 {
+    background-color: rgb(245, 241, 241);
+    width: 100%;
+    height: 1%;
+    max-height: 10%;
+    display: flex;
+    justify-content: center;
+}
+
+.container1{
+    background-color: rgb(244, 247, 246);
+    /* width: 45%;
+    max-width: 50%; */
+    height: 60;
+    max-height: 75%;
+    text-align: center;
+    padding: 2.5rem;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* overflow-y: auto; */
+}
+.eyyy{
+    border-radius: 17px;
+    margin: 1.4rem auto;
+    width: 100%;
+    height: 50px;
+    background-color: #d0cce2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    border: 2px solid black;
+}
+.eyyy p{
+    display: grid;
+    align-content: center;
+    height: 100%;
+    color: #fff;
+    font-size: 45px;
+    cursor: pointer;
+}
+form {
+    padding: 10px 0 0 0;
+    height: 70%;  
+}
+.input-username,
+.input-password,
+.input-div{
+    margin-top: 20px;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px solid rgba(22, 20, 20, 0.959);
+}
+
+input{
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    border: none;
+}
+
+
+input:focus{
+    outline: none;
+    border: none;
+}
+.btn-holder {
+    width: 100%;
+    height: 35px;
+    margin-top: 35px;
+    margin-bottom: 80px;
+}
+.btn-holder .btn{
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    background: linear-gradient(
+        to left,
+        purple,
+        aqua
+    );
+}
+form p{
+    font-size: 13px;
+
+}
+form p a{
+    color: rgb(8, 8, 8);
+    text-decoration: none;
+}
+form p a:hover{
+    text-decoration: underline;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.divider-text {
+    padding: 0 10px;
+    color: #666;
+}
+
+.gosuslugi-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background-color: #2094b1;
+    color: white;
+    text-decoration: none;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+  
+.gosuslugi-btn:hover {
+    background-color: #928DAB;
+}
+  
+.gosuslugi-logo {
+    height: 39px;
+    width: auto;
+}
+
+/* ВСЕ ЧТО НИЖЕ ДЛЯ footer */
+
+:root {
+    --primary-green: #ffffff;
+    --light-green: #518f4f;
+    --hover-green: #a0d3a5;
+    --dark-green: #1b5e20;
+    --white: #518f4f;
+    --border-color: #266330;
+}
+
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+.footer {
+    background-color: var(--primary-green);
+    color: var(--white);
+    padding: 5% 0 2.5%;
+    border-top: 3px solid var(--border-color);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+.footer-container {
+    max-width: 90%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3%;
+    padding: 0 2%;
+}
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-logo {
+    margin-bottom: 5%;
+    text-align: center;
+}
+
+.error-text {
+    color: red;
+}
+
+.logo-img {
+    height: 5vw;
+    min-height: 70px;
+    max-height: 100px;
+    width: auto;
+    object-fit: contain;
+}
+
+.footer-title {
+    font-size: 1.1vw;
+    font-weight: 600;
+    margin-bottom: 6%;
+    letter-spacing: 1px;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 40px;
+    height: 2px;
+    background: var(--light-green);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 4%;
+}
+
+.footer-links li a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.9vw;
+    transition: all 0.3s ease;
+    display: inline-block;
+    padding: 1% 0;
+}
+
+.footer-links li a:hover {
+    color: var(--hover-green);
+    transform: translateX(5px);
+}
+
+.footer-contact p {
+    margin: 0 0 4%;
+    font-size: 0.9vw;
+}
+
+.footer-contact a {
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-contact a:hover {
+    color: var(--hover-green);
+}
+
+.footer-legal {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding-top: 3%;
+    margin-top: 3%;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.8vw;
+    color: var(--light-green);
+}
+
+.footer-description {
+    color: var(--light-green);
+    margin-top: 4%;
+    font-size: 0.9vw;
+    text-align: center;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 5%;
+    }
+    
+    .footer-title {
+        font-size: 3vw;
+        margin-bottom: 5%;
+    }
+    
+    .footer-links li a,
+    .footer-contact p,
+    .footer-description {
+        font-size: 2.5vw;
+    }
+    
+    .logo-img {
+        height: 10vw;
+    }
+    
+    .footer-legal {
+        font-size: 2vw;
+    }
+}
