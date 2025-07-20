@@ -44,3 +44,10 @@ def send_results():
         session.commit()
 
     return {'status': 'ok', 'message': 'results received successfully'}, 200
+
+@api.route('/me', methods=['GET'])
+@jwt_required()
+def me():
+    with db.session() as session:
+        user = session.query(User).filter_by(id=int(get_jwt_identity())).first()
+        return {"user": {k: v for k, v in user.__dict__.items() if not k.startswith('_') and not k in ['password_hash', 'username']}}, 200

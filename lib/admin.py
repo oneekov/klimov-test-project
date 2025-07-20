@@ -12,12 +12,14 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 @admin.route('/users/', methods=['GET'])
 @jwt_required()
 def get_users():
+    offset = int(request.args.get('offset', 0))
+    limit = min(int(request.args.get('limit', 50)), 50)
     with db.session() as session:
         user = session.execute(select(User).where(User.id==int(get_jwt_identity()))).scalar()
         if not (user.is_admin or user.is_super_admin):
             return {'status': 'error', 'message': 'access denied'}, 403
         
-        users = session.execute(select(User).where(not_(or_(User.is_admin, User.is_super_admin)))).scalars().all()
+        users = session.execute(select(User).where(not_(or_(User.is_admin, User.is_super_admin))).offset(offset).limit(limit)).scalars().all()
         formatted_users = [{k: v for k, v in i.__dict__.items() if not k.startswith('_') and not k in ['password_hash', 'username']} for i in users]
         return {'users': formatted_users}, 200
 
@@ -39,6 +41,8 @@ def get_answers():
     school = request.args.get('school', None)
     grade_number = request.args.get('grade_number', None)
     profession_type = request.args.get('profession_type', None)
+    offset = int(request.args.get('offset', 0))
+    limit = min(int(request.args.get('limit', 50)), 50)
 
     with db.session() as session:
         user = session.execute(select(User).where(User.id==int(get_jwt_identity()))).scalar()
@@ -57,7 +61,7 @@ def get_answers():
             condition = and_(*[main_field > other for other in other_fields])
             answers = answers.filter(condition)
         
-        answers = answers.all()
+        answers = answers.offset(offset).limit(limit).all()
 
         formatted_answers = [{k: v for k, v in i.__dict__.items() if not k.startswith('_') and not k in ['user_agent', 'ip']} for i in answers]
 
@@ -74,12 +78,61 @@ def get_answers_csv():
     school = request.args.get('school', None)
     grade_number = request.args.get('grade_number', None)
     profession_type = request.args.get('profession_type', None)
+    offset = int(request.args.get('offset', 0))
+    limit = min(int(request.args.get('limit', 50)), 50)
 
     with db.session() as session:
         user = session.execute(select(User).where(User.id==int(get_jwt_identity()))).scalar()
         if not (user.is_admin or user.is_super_admin):
             return {'status': 'error', 'message': 'access denied'}, 403
-    # TODO: реализовать выгрузку в CSV
+        
+        answers = session.query(Answer)
+        if school:
+            answers = answers.filter(Answer.school == school)
+        if grade_number:
+            answers = answers.filter(Answer.grade_number == grade_number)
+        if profession_type and profession_type in ['nature', 'tech', 'human', 'sign_system', 'image']:
+            main_field = getattr(User, profession_type)
+            other_fields = [getattr(User, f) for f in ['nature', 'tech', 'human', 'sign_system', 'image'] if f != profession_type]
+            condition = and_(*[main_field > other for other in other_fields])
+            answers = answers.filter(condition)
+        
+        answers = answers.offset(offset).limit(limit).all()
+        formatted_answers = [i.__dict__ for i in answers]
+
+        for answer in formatted_answers:
+            user = session.execute(select(User).where(User.id==answer['user_id'])).scalar()
+            del answer['user_id']
+            answer['user'] = user.__dict__
+
+    data = []
+    for answer in formatted_answers:
+        data.append({
+            "Фамилия": answer['user']['surname'],
+            "Имя": answer['user']['name'],
+            "Отчество": answer['user']['patronymic'],
+            "Класс": answer['user']['grade_number'],
+            "Школа": answer['user']['school'],
+            "Почта": answer['user']['contact_email'],
+            "Номер": answer['user']['contact_number'],
+            "Ч-П": answer['nature_points'],
+            "Ч-Т": answer['tech_points'],
+            "Ч-Ч": answer['human_points'],
+            "Ч-ЗС": answer['sign_points'],
+            "Ч-ИО": answer['image_points']
+        })
+    
+    df = pd.DataFrame(data)
+    csv_data = io.BytesIO()
+    df.to_csv(csv_data, index=False, encoding='utf-8-sig')
+    csv_data.seek(0)
+
+    return send_file(
+        csv_data,
+        mimetype='text/csv',
+        as_attachment=True,
+        download_name=f'Answers-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.csv'
+    )
 
 @admin.route('/answers/excel/', methods=['GET'])
 @jwt_required()
@@ -87,6 +140,8 @@ def get_answers_excel():
     school = request.args.get('school', None)
     grade_number = request.args.get('grade_number', None)
     profession_type = request.args.get('profession_type', None)
+    offset = int(request.args.get('offset', 0))
+    limit = min(int(request.args.get('limit', 50)), 50)
 
     with db.session() as session:
         user = session.execute(select(User).where(User.id==int(get_jwt_identity()))).scalar()
@@ -100,11 +155,9 @@ def get_answers_excel():
         if profession_type and profession_type in ['nature', 'tech', 'human', 'sign_system', 'image']:
             main_field = getattr(User, profession_type)
             other_fields = [getattr(User, f) for f in ['nature', 'tech', 'human', 'sign_system', 'image'] if f != profession_type]
-    
             condition = and_(*[main_field > other for other in other_fields])
             answers = answers.filter(condition)
-        
-        answers = answers.all()
+        answers = answers.offset(offset).limit(limit).all()
 
         formatted_answers = [i.__dict__ for i in answers]
 
@@ -112,7 +165,7 @@ def get_answers_excel():
             user = session.execute(select(User).where(User.id==answer['user_id'])).scalar()
             del answer['user_id']
             answer['user'] = user.__dict__
-    
+
     data = []
     for answer in formatted_answers:
         data.append({
@@ -130,7 +183,7 @@ def get_answers_excel():
                 "Ч-ИО": answer['image_points']
         })
     
-        df = pd.DataFrame(data)
+    df = pd.DataFrame(data)
     excel_data = io.BytesIO()
     with pd.ExcelWriter(excel_data, engine='openpyxl') as writer:
         df.to_excel(writer, index=False)
@@ -144,7 +197,29 @@ def get_answers_excel():
         download_name=f'Answers-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.xlsx'
     )
 
-@admin.route('/admins/rights', methods=['PATCH'])
-def change_rights():
-    #TODO: реализовать изменение прав администратора
-    return {'status': 'error', 'message': 'not implemented'}, 501
+@admin.route('/admins/rights/<int:id>', methods=['PATCH'])
+def change_rights(id):
+    data = request.json
+    if not data:
+        return {'status': 'error', 'message': 'data not provided'}, 400
+
+    is_admin = data.get('is_admin', None)
+    is_super_admin = data.get('is_super_admin', None)
+
+    if not (is_admin or is_super_admin):
+        return {'status': 'error', 'message': 'data not provided'}, 400
+    
+    with db.session() as session:
+        user = session.execute(select(User).where(User.id==int(get_jwt_identity()))).scalar()
+        if not (user.is_admin or user.is_super_admin):
+            return {'status': 'error', 'message': 'access denied'}, 403
+        
+        target_user = session.execute(select(User).where(User.id==id)).scalar()
+        if not target_user:
+            return {'status': 'error', 'message': 'user not found'}, 404
+        
+        target_user.is_admin = is_admin
+        target_user.is_super_admin = is_super_admin
+        session.commit()
+
+        return {'status': 'ok', 'message': 'rights updated successfully'}, 200
