@@ -25,6 +25,7 @@ document.getElementById('LogForm').addEventListener('submit', async (event) => {
 
         const result = response.json(); // Парсим JSON-ответ
         document.getElementById('responseMessage').textContent = "Успешно! Ответ: " + JSON.stringify(result);
+        document.location.href = "./main.html"
 
     } catch (error) {
         //console.error('Ошибка:', error);
