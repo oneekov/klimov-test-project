@@ -35,10 +35,7 @@ class User(Base):
 
     contact_email = Column(String(128), nullable=True)
     contact_number = Column(String(16), nullable=True)
-
-    sex = Column(SQLEnum(SexEnum), nullable=True)
-    age = Column(Integer, nullable=True)
-
+    
     # TODO: авторизация через госуслуги
 
     answers = relationship('Answer', cascade='all, delete-orphan')

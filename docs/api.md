@@ -58,6 +58,33 @@
 ```json
 {"status": "error", "message": "user not exist"}
 ```
+## GET /api/me
+Получение информации о текущем пользователе
+
+Требует заголовка Authorization: Bearer Token
+
+Ответ:
+
+200:
+```json
+{
+    "user": { // !!! Все значения, кроме id, is_admin, is_super_admin могут быть null !!!
+        "age": 21,
+        "contact_email": "123@gmail.com",
+        "contact_number": "+79871234567",
+        "grade_letter": "A",
+        "grade_number": 9,
+        "id": 2,
+        "is_admin": true,
+        "is_super_admin": false,
+        "name": "Ivan",
+        "patronymic": "Ivanovich",
+        "school": "School №3",
+        "sex": "male",
+        "surname": "Ivanov"
+    }
+}
+```
 ## POST /api/send_results
 Отправка результатов
 
@@ -87,6 +114,14 @@
 ```
 ## GET /api/admin/users/
 Получение всех пользователей (не админов)
+
+Тело запроса:
+```
+http://site_url/api/admin/users/?offset=0&limit=50
+
+# offset - смещение
+# limit - кол-во (макс. 50, стандарт. 50)
+```
 
 Требует заголовка Authorization: Bearer Token и наличия is_admin/is_superadmin у пользователя
 Ответ:
@@ -155,48 +190,89 @@
 ```json
 {"status": "error", "message": "access denied"}
 ```
-## GET /api/admin/answers/
+## GET /api/admin/answers/csv/
 Тело запроса:
 ```
-http://site_url/api/admin/answers/?school=52 школа&grade_number=9&profession_type=nature
+http://site_url/api/admin/answers/csv/?school=52 школа&grade_number=9&profession_type=nature&offset=0&limit=50
 
 # school - точное название школы
 # grade_number - номер класса
 # profession_type - тип профессии; возможные значения: ['nature', 'tech', 'human', 'sign_system', 'image']
+# offset - смещение
+# limit - кол-во (макс. 50, стандарт. 50)
 ```
+Требует заголовка Authorization: Bearer Token и наличия is_admin/is_superadmin у пользователя
+
 Ответ:
 
 200:
-```json
-{
-    "answers": [
-        {
-            "answer_id": 1,
-            "human_points": 5,
-            "image_points": -5,
-            "nature_points": -10,
-            "sign_points": 2,
-            "tech_points": 10,
-            "user": {
-                "age": 21,
-                "contact_email": "123@gmail.com",
-                "contact_number": "+79871234567",
-                "grade_letter": "A",
-                "grade_number": 9,
-                "id": 2,
-                "is_admin": false,
-                "is_super_admin": false,
-                "name": "Ivan",
-                "patronymic": "Ivanovich",
-                "school": "School №3",
-                "sex": "male",
-                "surname": "Ivanov"
-            }
-        }
-    ]
-}
-```
+
+*будет отдан файл .csv*
+
 403 (нет прав):
 ```json
 {"status": "error", "message": "access denied"}
+```
+## GET /api/admin/answers/excel/
+Тело запроса:
+```
+http://site_url/api/admin/answers/excel/?school=52 школа&grade_number=9&profession_type=nature&offset=0&limit=50
+
+# school - точное название школы
+# grade_number - номер класса
+# profession_type - тип профессии; возможные значения: ['nature', 'tech', 'human', 'sign_system', 'image']
+# offset - смещение
+# limit - кол-во (макс. 50, стандарт. 50)
+```
+Требует заголовка Authorization: Bearer Token и наличия is_admin/is_superadmin у пользователя
+
+Ответ:
+
+200:
+
+*будет отдан файл .xlsx*
+
+403 (нет прав):
+```json
+{"status": "error", "message": "access denied"}
+```
+## PATCH /admin/admins/rights/<id>
+Изменение прав администратора/пользователя
+
+id: ID пользователя, которому нужно изменить права
+
+Тело запроса:
+```json
+{
+  "is_admin": true,
+  "is_super_admin": false
+}
+```
+
+Требует заголовка Authorization: Bearer Token и наличия is_superadmin у пользователя
+
+Ответ:
+
+200:
+
+```json
+{"status": "ok", "message": "rights updated successfully"}
+```
+
+400:
+
+```json
+{"status": "error", "message": "data not provided"}
+```
+
+403:
+
+```json
+{"status": "error", "message": "access denied"}
+```
+
+404:
+
+```json
+{"status": "error", "message": "user not found"}
 ```

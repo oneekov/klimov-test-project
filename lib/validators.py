@@ -13,8 +13,6 @@ class UserInput(BaseModel):
     password: str
     school: Optional[str] = None
     grade: list[Union[int, str]]
-    sex: SexEnum
-    age: int
     full_name: list[str]
     email: EmailStr
     number: Optional[str] = None
@@ -49,12 +47,6 @@ class UserInput(BaseModel):
         for part in v:
             if len(part) > 40:
                 raise ValueError('length overflow (max 40) in full name part')
-        return v
-
-    @validator('age')
-    def validate_age(cls, v):
-        if v < 0 or v > 120:
-            raise ValueError('bad age provided (0-120)')
         return v
 
     @validator('number')
