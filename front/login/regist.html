@@ -17,21 +17,21 @@
         <div class="container1" id="reg1">
 
             <h1 class="custom-text">Регистрация</h1>
-            <div id="RegForm1">
+            <form id="RegForm1">
                 <div class="input-username">
-                    <input type="text" placeholder="Логин*" id="username">
+                    <input type="text" placeholder="Логин*" id="username" required>
                 </div>
 
                 <div class="input-password">
-                    <input type="password" placeholder="Пароль*" id="password1">
+                    <input type="password" placeholder="Пароль*" id="password1" required>
                 </div>
 
                 <div class="input-password">
-                    <input type="password" placeholder="Повторите пароль*" id="password2">
+                    <input type="password" placeholder="Повторите пароль*" id="password2" required>
                 </div>
 
                 <div class="input-div">
-                    <input type="email" placeholder="Электронная почта*" id="email">
+                    <input type="email" placeholder="Электронная почта*" id="email" required>
                 </div>
 
                 <p class="error-text" id="error" hidden=true>Пожалуйста повторите ввод</p>
@@ -48,22 +48,22 @@
                     <img src="./gosyslygi-logo.png" alt="Госуслуги" class="gosuslugi-logo">
                     <span>Войти через Госуслуги</span>
                 </a>
-            </div>
         </div>
+        </form>
         <div class="container1" id="reg2" hidden=true>
 
             <h1 class="custom-text">Регистрация</h1>
             <form id="RegForm2">
                 <div class="input-div">
-                    <input type="text" placeholder="Школа*" id="school" required=true>
+                    <input type="text" placeholder="Школа*" id="school" required>
                 </div>
 
                 <div class="input-div">
-                    <input type="number" placeholder="Класс (№)*" id="grade" required=true>
+                    <input type="number" placeholder="Класс (№)*" id="grade" required>
                 </div>
 
                 <div class="input-div">
-                    <input type="text" placeholder="ФИО*" id="full_name" required=true>
+                    <input type="text" placeholder="ФИО*" id="full_name" required>
                 </div>
 
                 <div class="input-div">
