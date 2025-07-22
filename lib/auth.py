@@ -21,7 +21,7 @@ def register():
         return {'status': 'error', 'message': e.errors()[0]['msg']}, 400
     
     with db.session() as session:
-        result = session.execute(select(User).where(or_(User.username==user.username, User.contact_email==user.email)))
+        result = session.execute(select(User).where(User.username==user.username))
         existing_user = result.scalars().first()
         if existing_user:
             return {'status': 'error', 'message': 'user already exists'}, 409

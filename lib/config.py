@@ -6,7 +6,7 @@ import os
 from lib.database import Database
 from lib.models import *
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../web/static", template_folder="../web/templates") # FIXME: сменить static_folder на конкретные views, в конце разработки
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'default_secret_key')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 86400
 

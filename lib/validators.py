@@ -14,7 +14,7 @@ class UserInput(BaseModel):
     school: Optional[str] = None
     grade: list[Union[int, str]]
     full_name: list[str]
-    email: EmailStr
+    email: Optional[EmailStr] = None
     number: Optional[str] = None
 
     @validator('username')

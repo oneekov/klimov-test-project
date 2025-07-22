@@ -3,16 +3,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: ui-sans-serif;
     width: 50;
 }
 body {
     width: 100%;
     height: 100%;
     background: linear-gradient(to right, 
-        #2ecc71,      /* зелёный */
-        #3498db,      /* синий */
-        #1abc9c      /* бирюзовый (промежуточный между зелёным и синим) */
+        #72c795,      /* зелёный */
+        #78afd4,      /* синий */
+        #6fc1b0      /* бирюзовый (промежуточный между зелёным и синим) */
     );
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 .custom-text {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: ui-sans-serif, Tahoma, Geneva, Verdana, sans-serif;
     font-size: 20px;
     font-weight: bold;
 }
@@ -41,7 +41,7 @@ body {
     /* width: 45%;
     max-width: 50%; */
     height: 55%;
-    max-height: 75%;
+    max-height: 60%;
     text-align: center;
     padding: 2.5rem;
     border-radius: 8px;
@@ -56,7 +56,7 @@ body {
     width: 100%;
     height: 50px;
     background-color: #d0cce2;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: ui-sans-serif, Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
     font-weight: bold;
     border: 2px solid black;
@@ -85,6 +85,7 @@ input{
     width: 100%;
     height: 100%;
     padding: 5px;
+    text-indent: 10px;
     border: none;
 }
 
@@ -142,32 +143,4 @@ form p a:hover{
 .divider-text {
     padding: 0 10px;
     color: #666;
-}
-
-.gosuslugi-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 12px 24px;
-    background-color: #2094b1;
-    color: white;
-    text-decoration: none;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-  
-.gosuslugi-btn:hover {
-    background-color: #928DAB;
-}
-  
-.gosuslugi-logo {
-    height: 39px;
-    width: auto;
 }
