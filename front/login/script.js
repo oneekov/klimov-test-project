@@ -286,6 +286,7 @@ function calculateResults() {
 /* --- Existing code above remains unchanged --- */
 
 // Add navigation buttons dynamically
+/* --- Update renderNavigation function to hide Next button when Submit is visible --- */
 function renderNavigation() {
     const navContainer = document.getElementById('navigation-container');
     navContainer.innerHTML = '';
@@ -317,7 +318,15 @@ function renderNavigation() {
             renderQuestion();
         }
     });
-    navContainer.appendChild(nextBtn);
+
+    // Determine if submit button is visible
+    const submitBtn = document.getElementById('submit-btn');
+    const isSubmitVisible = submitBtn && submitBtn.style.display !== 'none';
+
+    // Only append Next button if submit is not visible
+    if (!isSubmitVisible) {
+        navContainer.appendChild(nextBtn);
+    }
 }
 
 function renderQuestion() {
@@ -367,14 +376,16 @@ function renderQuestion() {
 
 function updateNavigation() {
     const submitBtn = document.getElementById('submit-btn');
-    const hasAnswered = answers[currentQuestion] !== undefined;
+    const allAnswered = testData.questions.every((_, idx) => answers[idx] !== undefined);
 
     if (currentQuestion === testData.questions.length - 1) {
+        // Only show the button on the last question and if all are answered
+        showSubmitBtn(allAnswered);
         submitBtn.textContent = 'Получить результаты';
-        submitBtn.disabled = !hasAnswered;
+        submitBtn.disabled = !allAnswered;
     } else {
-        submitBtn.textContent = 'Получить результаты';
-        submitBtn.disabled = true;
+        // Hide the button on all other questions
+        showSubmitBtn(false);
     }
 }
 
@@ -387,6 +398,8 @@ document.addEventListener('DOMContentLoaded', function () {
         navDiv.style.marginTop = '20px';
         document.getElementById('questions-container').after(navDiv);
     }
+    // Hide the submit button initially
+    showSubmitBtn(false);
     renderQuestion();
     document.getElementById('submit-btn').addEventListener('click', showResults);
 });
@@ -433,7 +446,7 @@ function sendResultsToServer(results) {
             // If you need to send a token, you can add it here:
             'Authorization': 'Bearer ' + getCookie('token')
         },
-        body: JSON.stringify({"results": results})
+        body: JSON.stringify({ "results": results })
     })
         .then(response => {
             if (!response.ok) {
@@ -444,4 +457,15 @@ function sendResultsToServer(results) {
         .catch(error => {
             console.error('Error sending results:', error);
         });
+}
+
+
+/* --- Add this utility function --- */
+function showSubmitBtn(show) {
+    const submitBtn = document.getElementById('submit-btn');
+    if (show) {
+        submitBtn.style.display = '';
+    } else {
+        submitBtn.style.display = 'none';
+    }
 }
