@@ -5,7 +5,7 @@ body {
     margin: 0 auto;
     padding: 0;
     /* Убираем padding у body, чтобы градиент был на всю ширину */
-    background-color: rgb(201, 32, 32);
+    background-color: #f4f7f4;
     /* Фон body теперь белый (или любой другой, если нужно) */
     min-height: 100%;
     display: flex;

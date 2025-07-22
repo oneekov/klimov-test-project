@@ -1,10 +1,17 @@
 function doNext() {
-    document.getElementById("reg2").hidden = false;
-    document.getElementById("reg1").hidden = true;
+    if (document.getElementById("password1").value == document.getElementById("password2").value) {
+        document.getElementById("reg2").hidden = false;
+        document.getElementById("reg1").hidden = true;
+    }
+    else {
+        document.getElementById("error").textContent = "Пароли не совпадают";
+        document.getElementById("error").hidden = false;
+    }
 }
 
 function checkFill() {
-    if (document.getElementById("username").value == "" || document.getElementById("password1").value == "" || document.getElementById("password2").value == "" || document.getElementById("email").value == "") {
+    if (document.getElementById("username").value == "" || document.getElementById("password1").value == "" || document.getElementById("password2").value == "") {
+        document.getElementById("error").textContent = "Пожалуйста повторите ввод";
         document.getElementById("error").hidden = false;
     }
     else {
@@ -61,6 +68,12 @@ async function sendInfo() {
 
         const result = await response.json();
         console.log("Registration successful:", result);
+
+        // Сохраняем токен в куки (на 1 день)
+        if (result.token) {
+            createCookie('auth_token', result.token, 1);
+        }
+
         document.location.href = "./main.html";
 
     } catch (error) {
@@ -71,30 +84,30 @@ async function sendInfo() {
     }
 }
 
-// function createCookie(name, value, days) {
-//     var expires;
-//     if (days) {
-//         var date = new Date();
-//         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-//         expires = "; expires=" + date.toGMTString();
-//     }
-//     else {
-//         expires = "";
-//     }
-//     document.cookie = name + "=" + value + expires + "; path=/";
-// }
+function createCookie(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
 
-// function getCookie(c_name) {
-//     if (document.cookie.length > 0) {
-//         c_start = document.cookie.indexOf(c_name + "=");
-//         if (c_start != -1) {
-//             c_start = c_start + c_name.length + 1;
-//             c_end = document.cookie.indexOf(";", c_start);
-//             if (c_end == -1) {
-//                 c_end = document.cookie.length;
-//             }
-//             return unescape(document.cookie.substring(c_start, c_end));
-//         }
-//     }
-//     return "";
-// }
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
+}

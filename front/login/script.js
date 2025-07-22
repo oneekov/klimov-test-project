@@ -249,6 +249,8 @@ function updateNavigation() {
 
 function showResults() {
     calculateResults();
+    document.getElementById("results").hidden = false;
+    document.getElementById("description").hidden = true;
 
     const resultsContainer = document.getElementById('results-content');
     resultsContainer.innerHTML = '';
