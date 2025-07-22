@@ -8,9 +8,8 @@ document.getElementById('LogForm').addEventListener('submit', async (event) => {
     };
 
     try {
-        //window.location.href = "./main.html"; 
         // Отправляем POST-запрос
-        const response = fetch('/api/auth/login', {
+        const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json' // Указываем тип данных
@@ -19,16 +18,25 @@ document.getElementById('LogForm').addEventListener('submit', async (event) => {
         });
 
         // Обрабатываем ответ
+        const result = await response.json();
+
         if (!response.ok) {
-            throw new Error(`Ошибка HTTP: ${response.status}`);
+            document.getElementById("error3").hidden = false;
+            // Показываем сообщение об ошибке, если оно есть в ответе
+            document.getElementById('responseMessage').value = result.message || `Ошибка HTTP: ${response.status}`;
+            throw new Error(result.message || `Ошибка HTTP: ${response.status}`);
         }
 
-        const result = response.json(); // Парсим JSON-ответ
-        document.getElementById('responseMessage').textContent = "Успешно! Ответ: " + JSON.stringify(result);
-        document.location.href = "./main.html"
+        // Проверяем наличие токена и записываем его в куки
+        if (result.token) {
+            createCookie('auth_token', result.token, 1); // Сохраняем токен на 1 день
+            console.log(getCookie('auth_token'));
+        }
+
+        console.log("Успешно! Ответ: " + JSON.stringify(result));
+        document.location.href = "./main.html";
 
     } catch (error) {
-        //console.error('Ошибка:', error);
         console.log("Ошибка: " + error.message);
     }
 });

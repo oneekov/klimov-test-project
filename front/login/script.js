@@ -1,3 +1,5 @@
+console.log(getCookie("token"))
+
 const testData = {
     questions: [
         {
@@ -14,7 +16,7 @@ const testData = {
                 "Помогать больным",
                 "Составлять схемы, программы для вычислительных машин"
             ],
-            categories: ["person", "sign"]
+            categories: ["human", "sign_system"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -22,7 +24,7 @@ const testData = {
                 "Следить за качеством книжных иллюстраций, плакатов, картин",
                 "Следить за состоянием, развитием растений"
             ],
-            categories: ["art", "nature"]
+            categories: ["image", "nature"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -30,7 +32,7 @@ const testData = {
                 "Работать с материалами (дерево, ткань, глина)",
                 "Доводить товары до потребителя (реклама, продажа)"
             ],
-            categories: ["tech", "person"]
+            categories: ["tech", "human"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -38,7 +40,7 @@ const testData = {
                 "Обсуждать научно-популярные труды",
                 "Обсуждать художественные книги (фильмы, пьесы, концерты)"
             ],
-            categories: ["sign", "art"]
+            categories: ["sign_system", "image"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -46,7 +48,7 @@ const testData = {
                 "Выращивать и ухаживать за животными",
                 "Тренировать взрослых или детей какому-либо навыку (трудовому, учебному, спортивному)"
             ],
-            categories: ["nature", "person"]
+            categories: ["nature", "human"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -54,7 +56,7 @@ const testData = {
                 "Копировать рисунки, картины, изображения",
                 "Управлять каким либо грузовым, подъемным или транспортным средством"
             ],
-            categories: ["art", "tech"]
+            categories: ["image", "tech"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -62,7 +64,7 @@ const testData = {
                 "Сообщать, доносить людям какую либо информацию",
                 "Оформлять выставки, картины, витрины (подготавливать декорации)"
             ],
-            categories: ["person", "art"]
+            categories: ["human", "image"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -70,7 +72,7 @@ const testData = {
                 "Ремонтировать вещи, изделия, технику, квартиры",
                 "Искать и исправлять ошибки в текстах, программах"
             ],
-            categories: ["tech", "sign"]
+            categories: ["tech", "sign_system"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -78,7 +80,7 @@ const testData = {
                 "Лечить животных",
                 "Выполнять вычисления, расчёты"
             ],
-            categories: ["nature", "sign"]
+            categories: ["nature", "sign_system"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -94,7 +96,7 @@ const testData = {
                 "Разбирать ссоры между людьми, доказывать, пояснять, разнимать",
                 "Проверять, уточнять чертежи, схемы, таблицы"
             ],
-            categories: ["person", "sign"]
+            categories: ["human", "sign_system"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -102,7 +104,7 @@ const testData = {
                 "Наблюдать, участвовать в работе кружков, художественной самодеятельности",
                 "Наблюдать, изучать микроорганизмы"
             ],
-            categories: ["art", "nature"]
+            categories: ["image", "nature"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -110,7 +112,7 @@ const testData = {
                 "Обслуживать, налаживать медицинские приборы, аппараты",
                 "Оказывать мед. помощь больным людям при ранениях, ушибах и т.д."
             ],
-            categories: ["tech", "person"]
+            categories: ["tech", "human"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -118,7 +120,7 @@ const testData = {
                 "Художественно, литературно описывать происходившие или выдуманные события",
                 "Составлять отчёты о наблюдаемых явлениях, событиях, данных"
             ],
-            categories: ["art", "sign"]
+            categories: ["image", "sign_system"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -126,7 +128,7 @@ const testData = {
                 "Делать лабораторные анализы",
                 "Принимать пациентов, выслушивать проблемы, назначать лечение"
             ],
-            categories: ["nature", "person"]
+            categories: ["nature", "human"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -134,7 +136,7 @@ const testData = {
                 "Красить или расписывать стены помещений, заниматься дизайном",
                 "Осуществлять монтаж или сборку машин, приборов, техники"
             ],
-            categories: ["art", "tech"]
+            categories: ["image", "tech"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -142,7 +144,7 @@ const testData = {
                 "Организовывать экскурсии, представления, мероприятия",
                 "Выступать на сцене, принимать участие в концертах"
             ],
-            categories: ["person", "art"]
+            categories: ["human", "image"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -150,7 +152,7 @@ const testData = {
                 "Изготовлять по чертежам детали, одежду, изделия",
                 "Заниматься черчением, копировать схемы, карты"
             ],
-            categories: ["tech", "sign"]
+            categories: ["tech", "sign_system"]
         },
         {
             text: "Что вы выберете, если у вас будет лишь два варианта?",
@@ -158,15 +160,15 @@ const testData = {
                 "Вести борьбу с вредителями леса, сада, огорода",
                 "Работать с клавиатурой (писать тексты, печатать, копировать, редактировать)"
             ],
-            categories: ["nature", "sign"]
+            categories: ["nature", "sign_system"]
         }
     ],
     categories: {
         "nature": "Человек-природа",
         "tech": "Человек-техника",
-        "person": "Человек-человек",
-        "sign": "Человек-знаковая система",
-        "art": "Человек-художественный образ"
+        "human": "Человек-человек",
+        "sign_system": "Человек-знаковая система",
+        "image": "Человек-художественный образ"
     }
 };
 
@@ -175,9 +177,9 @@ let answers = [];
 let scores = {
     "nature": 0,
     "tech": 0,
-    "person": 0,
-    "sign": 0,
-    "art": 0
+    "human": 0,
+    "sign_system": 0,
+    "image": 0
 };
 
 // Инициализация теста
@@ -264,6 +266,7 @@ function showResults() {
         }
     });
 
+    sendResultsToServer(scores);
     document.getElementById('results').style.display = 'block';
     document.querySelector('.test-container').style.display = 'none';
 }
@@ -278,7 +281,7 @@ function calculateResults() {
         const category = question.categories[answerIndex];
         scores[category]++;
     });
-    fetch("/api/send_results")
+    //fetch("/api/send_results")
 }
 /* --- Existing code above remains unchanged --- */
 
@@ -388,6 +391,57 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('submit-btn').addEventListener('click', showResults);
 });
 
+function createCookie(name, value, days) {
+    var expires;
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    }
+    else {
+        expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
 
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
+}
 
-
+/**
+ * Sends the test results to the server via POST request.
+ * @param {Object} results - The scores object to send.
+ * @returns {Promise<Response>} The fetch response promise.
+ */
+function sendResultsToServer(results) {
+    return fetch('/api/send_results', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            //'Authorization': 'Bearer'
+            // If you need to send a token, you can add it here:
+            'Authorization': 'Bearer ' + getCookie('token')
+        },
+        body: JSON.stringify({"results": results})
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send results');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Error sending results:', error);
+        });
+}

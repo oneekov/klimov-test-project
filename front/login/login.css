@@ -25,7 +25,7 @@
  }
 
  .custom-text {
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     font-family: 'ui-sans-serif', Tahoma, Geneva, Verdana, sans-serif;
      font-size: 20px;
      font-weight: bold;
  }
@@ -38,13 +38,17 @@
      display: flex;
      justify-content: center;
  }
+ 
+ .error-text {
+    color: red;
+}
 
  .container1 {
      background-color: rgb(244, 247, 246);
-     /* width: 45%;
-    max-width: 50%; */
-     height: 85%;
-     max-height: 90%;
+     width: 30%;
+     max-width: 50%;
+     /* height: 85%;
+     max-height: 90%; */
      text-align: center;
      padding: 2.5rem;
      border-radius: 8px;
