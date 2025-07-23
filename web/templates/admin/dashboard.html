@@ -1,0 +1,115 @@
+<!--TODO: change href and placeholders-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/admin.js"></script>
+</head>
+
+<body class="flex h-screen bg-gray-100">
+
+    <!-- Sidebar -->
+    <aside class="w-56 bg-white shadow-md h-full flex flex-col">
+        <div class="p-4 border-b">
+            <h2 class="text-xl font-bold">Админ-панель</h2>
+        </div>
+        <nav class="mt-4 px-2 flex-1">
+            <ul class="space-y-1">
+                <li>
+                    <a href="./dashboard"
+                        class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100 bg-blue-50">
+                        Главная
+                    </a>
+                </li>
+                <li>
+                    <a href="./users" class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100">
+                        Пользователи
+                    </a>
+                </li>
+                <li>
+                    <a href="./admins" class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100">
+                        Администраторы
+                    </a>
+                </li>
+                <li>
+                    <a href="./answers" class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100">
+                        Ответы
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="p-4 border-t mt-auto">
+            <button onclick="logOut()" class="w-full text-left px-2 py-2 text-gray-700 rounded hover:bg-gray-100">
+                Выйти
+            </button>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <main class="flex-1 overflow-y-auto p-6">
+            <!-- Карточка дашборда -->
+            <div class="bg-white p-4 rounded shadow mb-6 flex justify-between items-center">
+                <div class="font-medium text-lg" id="hhhtext">
+                    Привет, {{ user_name }} {{ user_surname }}
+                </div>
+                <div class="flex space-x-8">
+                    <div class="flex items-center">
+                        <span class="text-gray-600 mr-2">Пользователи:</span>
+                        <span class="font-semibold text-blue-600" id="uspan">{{ user_count }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-gray-600 mr-2">Ответы:</span>
+                        <span class="font-semibold text-green-600" id="rspan">{{ response_count }}</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="font-small text-gray-600 mb-4">
+                    <p>Воспользуйтесь вкладками для перехода к нужному разделу.</p>
+                </div>.
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Получаем имя пользователя и фамилию из куки
+            const url = '/api/me';
+            const token = getCookie('token');
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                console.log('Успех:', data);
+                document.getElementById('hhhtext').textContent = `Привет, ${data.user.name} ${data.user.surname}`;
+            } catch (error) {
+                console.error('Ошибка получения данных пользователя:', error.message);
+            }
+
+            // Получаем статистику админа
+            const statsUrl = '/api/admin/stats';
+            try {
+                const response = await fetch(statsUrl, {
+                    method: 'GET',
+                    headers: {'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                console.log('Успех:', data);
+                document.getElementById('uspan').textContent = data.stats.total_users;
+                document.getElementById('rspan').textContent = data.stats.total_answers;
+            } catch (error) {
+                console.error('Произошла ошибка:', error.message);
+            }
+        });
+    </script>
+
+</body>
+
+</html>
