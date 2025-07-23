@@ -1,0 +1,30 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs</title>
+    <link rel="stylesheet" href="/static/admin_login.css">
+    <script src="/static/admin_login.js"></script>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen w-full shadow-md">
+    <div class="container1">
+        
+        <h1 class="custom-text">Вход в админ-панель</h1>
+        <div id="LogForm">
+            <div class="input-username">
+                <input type="text" placeholder="Логин" id="login" required>
+            </div>
+            <div class="input-password">
+                <input type="password" placeholder="Пароль" id="password" required>
+            </div>
+            <div class="btn-holder" onclick="login()">
+                <button class="eyyy">ВОЙТИ</button>
+            </div>
+        </div>
+        <P>Нет аккаунта? <a href="r" class="underline decoration-black hover:decoration-black">Регистрация</a></P> <!-- TODO: add href-->
+    </div>
+
+</body>
+</html>

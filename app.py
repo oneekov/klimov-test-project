@@ -1,11 +1,11 @@
-from flask import send_from_directory
+from flask import send_from_directory, abort
 from sqlalchemy import text
 
 from lib.config import *
 from lib.api import api
+from lib.views import *
 
 app.register_blueprint(api)
-
 
 # @app.route('/')
 # async def index():

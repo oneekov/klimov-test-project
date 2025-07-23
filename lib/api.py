@@ -50,4 +50,18 @@ def send_results():
 def me():
     with db.session() as session:
         user = session.query(User).filter_by(id=int(get_jwt_identity())).first()
-        return {"user": {k: v for k, v in user.__dict__.items() if not k.startswith('_') and not k in ['password_hash', 'username']}}, 200
+
+        answers = session.execute(
+            select(Answer).where(Answer.user_id == int(get_jwt_identity()))
+        ).scalars().all()
+
+        # Форматирование ответов с вложенной информацией о пользователе
+        formatted_answers = []
+        for answer in answers:
+            answer_data = {
+                k: v for k, v in answer.__dict__.items() 
+                if not k.startswith('_') and k not in ['user_agent', 'ip', 'user_id']
+            }
+            formatted_answers.append(answer_data)
+
+        return {'user': {k: v for k, v in user.__dict__.items() if not k.startswith('_') and not k in ['password_hash', 'username']}, 'answers': formatted_answers}, 200
