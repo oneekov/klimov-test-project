@@ -25,3 +25,7 @@ def admin_admins():
 @app.route('/admin/answers')
 def admin_answers():
     return render_template('admin/answers.html')
+
+@app.route('/me')
+def me():
+    return render_template('me.html')
