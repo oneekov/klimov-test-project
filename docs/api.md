@@ -13,7 +13,7 @@
     "school": "School №3",
     "grade": [9, "A"], //1 - класс, 2 - буква класса
     "full_name": ["Ivanov", "Ivan", "Ivanovich"], // в формате ФИО, лимит на каждую часть 40 символов
-    "email": "123@gmail.com", // Проверка на email
+    "email": "123@gmail.com", // Проверка на email, может отсутствовать
     "number": "+79871234567" // может отсутствовать
 }
 ```
@@ -196,8 +196,6 @@ http://site_url/api/admin/answers/csv/?school=52 школа&grade_number=9&profe
 # school - точное название школы
 # grade_number - номер класса
 # profession_type - тип профессии; возможные значения: ['nature', 'tech', 'human', 'sign_system', 'image']
-# offset - смещение
-# limit - кол-во (макс. 50, стандарт. 50)
 ```
 Требует заголовка Authorization: Bearer Token и наличия is_admin/is_superadmin у пользователя
 
@@ -219,8 +217,6 @@ http://site_url/api/admin/answers/excel/?school=52 школа&grade_number=9&pro
 # school - точное название школы
 # grade_number - номер класса
 # profession_type - тип профессии; возможные значения: ['nature', 'tech', 'human', 'sign_system', 'image']
-# offset - смещение
-# limit - кол-во (макс. 50, стандарт. 50)
 ```
 Требует заголовка Authorization: Bearer Token и наличия is_admin/is_superadmin у пользователя
 

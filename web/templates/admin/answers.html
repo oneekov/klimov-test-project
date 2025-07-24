@@ -1,0 +1,343 @@
+<!--TODO: change href and placeholders-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика - Тест Климова</title>
+    <script src="https://cdn.tailwindcss.com "></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js "></script>
+    <script src="/static/admin.js"></script>
+</head>
+
+<body class="flex h-screen bg-gray-100">
+
+    <!-- Sidebar -->
+    <aside class="w-56 bg-white shadow-md h-full flex flex-col">
+        <div class="p-4 border-b">
+            <h2 class="text-xl font-bold">Админ-панель</h2>
+        </div>
+        <nav class="mt-4 px-2 flex-1">
+            <ul class="space-y-1">
+                <li>
+                    <a href="./dashboard" class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100">
+                        Главная
+                    </a>
+                </li>
+                <li>
+                    <a href="./users" class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100">
+                        Пользователи
+                    </a>
+                </li>
+                <li>
+                    <a href="./admins" class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100">
+                        Администраторы
+                    </a>
+                </li>
+                <li>
+                    <a href="./answers" class="flex items-center p-2 text-gray-700 rounded hover:bg-gray-100 bg-blue-50">
+                        Ответы
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="p-4 border-t mt-auto">
+            <button onclick="logOut()" class="w-full text-left px-2 py-2 text-gray-700 rounded hover:bg-gray-100">
+                Выйти
+            </button>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <main class="flex-1 overflow-y-auto p-6">
+            <!-- Фильтры -->
+            <div class="bg-white p-4 rounded shadow mb-3">
+                <h2 class="text-lg font-semibold mb-4">Фильтры</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Номер класса (счётчик) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Номер класса</label>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" onclick="updateGradeCounter(-1)"
+                                class="w-8 h-8 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded">-</button>
+                            <input id="gradeNumberFilter" type="number" min="1" max="11" value=""
+                                class="w-12 text-center border-gray-300 rounded focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="1-11">
+                            <button type="button" onclick="updateGradeCounter(1)"
+                                class="w-8 h-8 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Школа (текстовое поле) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Школа</label>
+                        <input id="schoolFilter" type="text" placeholder="Введите название школы"
+                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <!-- Тип профессии -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Тип профессии</label>
+                        <select id="professionTypeFilter"
+                            class="w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Все</option>
+                            <option value="human">Человек-человек</option>
+                            <option value="image">Человек-изобразительный образ</option>
+                            <option value="nature">Человек-природа</option>
+                            <option value="sign_system">Человек-знаковая система</option>
+                            <option value="tech">Человек-техника</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex pt-3 gap-3">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded space-x" onclick="updateChart()">Применить</button>
+                    <button class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded space-x" onclick="clearFilters()">Очистить</button>
+                </div>
+            </div>
+            <!-- Кнопки экспорта -->
+            <div class="flex space-x-4 pb-3">
+                <button onclick="exportToCSV()"
+                    class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded">
+                    Экспорт в CSV
+                </button>
+                <button onclick="exportToExcel()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                    Экспорт в Excel
+                </button>
+            </div>
+            <!-- Диаграмма -->
+            <div class="bg-white p-4 rounded shadow mb-6">
+                <h2 class="text-lg font-semibold mb-4">Статистика по типам профессий</h2>
+                <div class="h-48">
+                    <canvas id="statsChart" class="w-full h-full"></canvas>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        let chartInstance = null;
+        const professionLabels = {
+            human: 'Человек-человек',
+            image: 'Человек-изобразительный образ',
+            nature: 'Человек-природа',
+            sign_system: 'Человек-знаковая система',
+            tech: 'Человек-техника',
+            undefined: 'Неопределенно'
+        };
+
+        // Цвета для сегментов диаграммы
+        const chartColors = [
+            'rgba(59, 130, 246, 0.8)', // blue-600
+            'rgba(16, 185, 129, 0.8)', // green-500
+            'rgba(249, 115, 22, 0.8)', // orange-500
+            'rgba(107, 114, 128, 0.8)', // gray-500
+            'rgba(236, 72, 153, 0.8)', // pink-500
+            'rgba(239, 68, 68, 0.8)'   // red-500
+        ];
+        // Получение токена из куки
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Функции экспорта
+        async function exportToCSV() {
+            const token = getCookie('token');
+            const gradeNumber = document.getElementById('gradeNumberFilter').value;
+            const school = document.getElementById('schoolFilter').value;
+            const professionType = document.getElementById('professionTypeFilter').value;
+
+            const params = new URLSearchParams();
+            if (gradeNumber) params.append('grade_number', gradeNumber);
+            if (school) params.append('school', school);
+            if (professionType) params.append('profession_type', professionType);
+
+            const response = await fetch(`/api/admin/answers/csv?${params.toString()}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при экспорте CSV');
+            }
+
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = 'export.csv';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+        }
+
+        async function exportToExcel() {
+            const token = getCookie('token');
+            const gradeNumber = document.getElementById('gradeNumberFilter').value;
+            const school = document.getElementById('schoolFilter').value;
+            const professionType = document.getElementById('professionTypeFilter').value;
+
+            const params = new URLSearchParams();
+            if (gradeNumber) params.append('grade_number', gradeNumber);
+            if (school) params.append('school', school);
+            if (professionType) params.append('profession_type', professionType);
+
+            const response = await fetch(`/api/admin/answers/excel?${params.toString()}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при экспорте Excel');
+            }
+
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = 'export.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+        }
+
+        // Инициализация диаграммы
+        // Маппинг ключей из API на русские названия
+
+
+        async function updateChart() {
+            try {
+                const token = getCookie('token');
+                const gradeNumber = document.getElementById('gradeNumberFilter').value;
+                const school = document.getElementById('schoolFilter').value;
+
+                const params = new URLSearchParams();
+                if (gradeNumber) params.append('grade_number', gradeNumber);
+                if (school) params.append('school', school);
+
+                const response = await fetch(`/api/admin/answers/stats?${params.toString()}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ошибка при загрузке статистики');
+                }
+
+                const data = await response.json();
+
+                // Формируем данные для диаграммы
+                const labels = Object.keys(data.stats).map(key => professionLabels[key] || key);
+                const values = Object.values(data.stats);
+
+                // Уничтожаем старую диаграмму
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                // Создаем круговую диаграмму
+                const ctx = document.getElementById('statsChart').getContext('2d');
+                chartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Процент распределения',
+                            data: values,
+                            backgroundColor: chartColors,
+                            borderColor: chartColors.map(color => color.replace('0.8', '1')),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 15,
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: context => {
+                                        const value = context.raw;
+                                        const total = context.dataset.data.reduce((sum, val) => sum + val, 0);
+                                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                        return ` ${value} ответов (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Не удалось загрузить статистику. Проверьте подключение или авторизацию.');
+
+                // Отображаем пустую диаграмму при ошибке
+                const ctx = document.getElementById('statsChart').getContext('2d');
+                if (chartInstance) chartInstance.destroy();
+
+                chartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: Object.values(professionLabels),
+                        datasets: [{
+                            label: 'Нет данных',
+                            data: new Array(6).fill(0),
+                            backgroundColor: Array(6).fill('rgba(209, 213, 219, 0.6)'),
+                            borderColor: Array(6).fill('rgba(156, 163, 175, 1)')
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { enabled: false }
+                        }
+                    }
+                });
+            }
+        }
+
+        // При изменении фильтров обновляем диаграмму
+
+        // Инициализация диаграммы при загрузке страницы
+        document.addEventListener('DOMContentLoaded', updateChart);
+
+        function updateGradeCounter(delta) {
+            const input = document.getElementById('gradeNumberFilter');
+            let value = parseInt(input.value) || 0;
+            value += delta;
+
+            if (value < 1) value = 1;
+            if (value > 11) value = 11;
+
+            input.value = value;
+        }
+        function clearFilters() {
+            document.getElementById('gradeNumberFilter').value = "";
+            document.getElementById('professionTypeFilter').value = "";
+            document.getElementById('schoolFilter').value = "";
+            updateChart();
+        }
+    </script>
+
+</body>
+
+</html>
