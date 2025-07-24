@@ -18,6 +18,9 @@
             <button onclick="document.location.href='/test';" class="bg-green-200 hover:bg-green-300 text-black px-4 py-2 rounded transition">
                 Тест
             </button>
+            <button onclick="document.location.href='/admin/dashboard';" class="bg-green-200 hover:bg-green-300 text-black px-4 py-2 rounded transition" hidden id="admin-dashboard-btn">
+                Админ-панель
+            </button>
         </div>
 
         <div class="absolute left-1/2 transform -translate-x-1/2">
@@ -140,6 +143,11 @@
                         </div>
                     </div>
             `
+
+            if (user.is_admin || user.is_super_admin) {
+                document.getElementById('admin-dashboard-btn').hidden = false;
+            }
+                
 
             // Answers Table Section
             let answersTableHTML = `
