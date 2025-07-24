@@ -7,10 +7,6 @@ from lib.views import *
 
 app.register_blueprint(api)
 
-# @app.route('/')
-# async def index():
-#     return 'index page' #TODO: index page
-
 @app.route('/<path:filename>')
 def serve_file(filename):
     return send_from_directory(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'front'), filename)
@@ -18,11 +14,6 @@ def serve_file(filename):
 @app.route('/healthz')
 def healthz():
     return {'status': 'ok'}
-
-# @app.route('/test/', defaults={'id': None})
-# @app.route('/test/<int:id>')
-# async def test(id):
-#     return 'test page' #TODO: test page
 
 if __name__ == '__main__':
     with db.session() as session:
