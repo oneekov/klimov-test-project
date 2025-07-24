@@ -29,3 +29,11 @@ def admin_answers():
 @app.route('/me')
 def me():
     return render_template('me.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/register')
+def register():
+    return render_template('reg.html')

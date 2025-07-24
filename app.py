@@ -15,6 +15,11 @@ def serve_file(filename):
 def healthz():
     return {'status': 'ok'}
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'web', 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 if __name__ == '__main__':
     with db.session() as session:
         if not (session.execute(select(exists().where(User.id==1)))).scalar():

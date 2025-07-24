@@ -146,7 +146,7 @@
         // Сохранение прав
         async function saveRights() {
             const url = `/api/admin/rights/${current_id}`;
-            const token = getCookie('token');
+            const token = getCookie('auth_token');
             const is_admin = document.getElementById('admin-checkbox').checked;
             const is_super_admin = document.getElementById('super-admin-checkbox').checked;
             try {
@@ -170,7 +170,7 @@
             const bodyEl = document.getElementById('adminsTableBody');
             bodyEl.innerHTML = `<tr><td colspan="9" class="text-center py-4">Загрузка данных...</td></tr>`;
             try {
-                const token = getCookie('token');
+                const token = getCookie('auth_token');
                 const res = await fetch(`/api/admin/admins?offset=${(page-1)*limit}&limit=${limit}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });

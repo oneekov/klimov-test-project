@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/static/regist.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="min-h-screen w-full bg-gradient-to-r from-green-500 via-blue-400 to-blue-600 rounded-lg shadow-md">
+    <main>
+        <div class="block1">
+            <img src="/static/logo.png" class="logo">
+        </div>
+        <div class="container1" id="reg1">
+
+            <h1 class="custom-text">Регистрация</h1>
+            <div id="RegForm1">
+                <div class="input-username">
+                    <input type="text" placeholder="Логин*" id="username" required>
+                </div>
+
+                <div class="input-password">
+                    <input type="password" placeholder="Пароль*" id="password1" required>
+                </div>
+
+                <div class="input-password">
+                    <input type="password" placeholder="Повторите пароль*" id="password2" required>
+                </div>
+
+                <div class="input-div">
+                    <input type="email" placeholder="Электронная почта" id="email">
+                </div>
+
+                <p class="error-text" id="error" hidden=true>Пожалуйста повторите ввод</p>
+
+                <div class="btn-holder" onclick="checkFill()">
+                    <button class="eyyy">ДАЛЕЕ</button>
+                </div>
+
+                <div class="divider">
+                    <span class="divider-text">или</span>
+                </div>
+
+                <a href="https://gosuslugi.ru" class="gosuslugi-btn">
+                    <img src="./gosyslygi-logo.png" alt="Госуслуги" class="gosuslugi-logo">
+                    <span>Войти через Госуслуги</span>
+                </a>
+            </div>
+        </div>
+        <div class="container1" id="reg2" hidden=true>
+
+            <h1 class="custom-text">Регистрация</h1>
+            <div id="RegForm2">
+                <div class="input-div">
+                    <input type="text" placeholder="Школа*" id="school" required>
+                </div>
+
+                <div class="input-div">
+                    <input type="number" placeholder="Класс (№)*" id="grade" required>
+                </div>
+
+                <div class="input-div">
+                    <input type="text" placeholder="ФИО*" id="full_name" required>
+                </div>
+
+                <div class="input-div">
+                    <input type="number" placeholder="Номер телефона" id="number">
+                </div>
+
+                <p class="error-text" id="error2" hidden=true>Пожалуйста повторите ввод</p>
+
+                <table class="checkboxs">
+                    <tr>
+                        <th><input type="checkbox" id="checkall"></th>
+                        <th> Согласие на обработку персональных данных</th>
+                    </tr>
+                </table>
+
+                <div class="btn-holder">
+                    <button class="eyyy" onclick="finCheckFill()" id="submitButton">ЗАРЕГИСТРИРОВАТЬСЯ</button>
+                </div>
+
+                <div class="divider">
+                    <span class="divider-text">или</span>
+                </div>
+
+                <a href="https://gosuslugi.ru" class="gosuslugi-btn">
+                    <img src="./gosyslygi-logo.png" alt="Госуслуги" class="gosuslugi-logo">
+                    <span>Войти через Госуслуги</span>
+                </a>
+            </div>
+        </div>
+    </main>
+    <!-- <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <img src="Лого-ЗД-2048x553.png" alt="АГРОПРОМЫШЛЕННЫЙ ХОЛДИНГ ЗЕЛЕНАЯ ДОЛИНА" class="logo-img">
+                </div>
+                <p class="footer-description">
+                    Лидер агропромышленного комплекса с 1998 года
+                </p>
+            </div>
+            
+            <div class="footer-column">
+                <h3 class="footer-title">Контакты</h3>
+                <div class="footer-contact">
+                    <p><a href="mailto:company@zdmail.ru">company@zdmail.ru</a></p>
+                    <p><a href="tel:+74722732390">+7 (4722) 73-23-90</a></p>
+                    <p><a href="tel:+74722732392">+7 (4722) 73-23-92</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-column">
+                <h3 class="footer-title">Адрес</h3>
+                <address style="font-style: normal; color: var(--white); font-size: 0.9vw;">
+                    Россия, г. Белгород,<br>
+                    Проспект Славы, дом 28
+                </address>
+            </div>
+            
+            <div class="footer-column">
+                <h3 class="footer-title">Информация</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Наша команда</a></li>
+                    <li><a href="#">Политика конфиденциальности</a></li>
+                    <li><a href="#">Список ресурсов</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-legal">
+                © 2025 Агропромышленный холдинг "Зеленая Долина". Все права защищены.
+            </div>
+        </div>
+    </footer> -->
+    <script src="/static/regist.js"></script>
+</body>
+
+</html>

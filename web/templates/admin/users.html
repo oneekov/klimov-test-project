@@ -193,7 +193,7 @@
                 <tr><td colspan="8" class="text-center py-4">Загрузка данных...</td></tr>
             `;
 
-                const token = getCookie('token');
+                const token = getCookie('auth_token');
 
                 // Пример API-запроса
                 const response = await fetch(`/api/admin/users?offset=${(page - 1) * limit}&limit=${limit}`, {
@@ -333,7 +333,7 @@
 
         async function saveRights() {
             const url = `/api/admin/rights/${current_id}`;
-            const token = getCookie('token');
+            const token = getCookie('auth_token');
 
             const is_admin = document.getElementById('admin-checkbox').checked;
             const is_super_admin = document.getElementById('super-admin-checkbox').checked;
