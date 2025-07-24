@@ -14,7 +14,7 @@ def create_pdf_report(surname, name, patronymic, content: str):
     c.drawImage("web/static/cert.png", 0, 0)
 
     c.drawCentredString(421, 325, f"{surname} {name}")
-    c.drawCentredString(421, 290, patronymic)
+    c.drawCentredString(421, 290, patronymic or '-')
 
     c.drawCentredString(421, 185, content)
 

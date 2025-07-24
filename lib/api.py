@@ -1,5 +1,6 @@
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask import Blueprint, request, send_file
+from sqlalchemy import desc
 import io
 from pydantic import ValidationError
 
@@ -112,4 +113,49 @@ def report(id: int):
             mimetype='application/pdf',
             as_attachment=True,
             download_name=f'cert_{id}.pdf'
+        )
+
+@api.route('/report/last', methods=['GET'])
+@jwt_required()
+def last_report():
+    with db.session() as session:
+        user = session.execute(
+            select(User).where(User.id == int(get_jwt_identity()))
+        ).scalars().first()
+
+        answer = session.execute(select(Answer).where(Answer.user_id==user.id).order_by(desc(Answer.answer_id))).scalars().first()
+
+        points = {
+            'nature': answer.nature_points,
+            'tech': answer.tech_points,
+            'human': answer.human_points,
+            'sign_system': answer.sign_points,
+            'image': answer.image_points
+        }
+
+        max_points = max(points.values())
+        max_keys = [k for k, v in points.items() if v == max_points]
+
+        if len(max_keys) == 1:
+            match max_keys[0]:
+                case 'nature':
+                    content = "работе с природой"
+                case 'tech':
+                    content = "технической деятельности"
+                case 'human':
+                    content = "работе с людьми"
+                case 'sign_system':
+                    content = "работе с знаковыми системами"
+                case 'image':
+                    content = "творческой деятельности"
+        else:
+            content = "разнообразной деятельности"
+
+        pdf_data = create_pdf_report(user.surname, user.name, user.patronymic, content)
+
+        return send_file(
+            io.BytesIO(pdf_data),
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name=f'cert_{answer.answer_id}.pdf'
         )
