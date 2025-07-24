@@ -34,7 +34,7 @@ document.getElementById('LogForm').addEventListener('submit', async (event) => {
         }
 
         console.log("Успешно! Ответ: " + JSON.stringify(result));
-        document.location.href = "./main.html";
+        document.location.href = "/login/main.html";
 
     } catch (error) {
         console.log("Ошибка: " + error.message);
@@ -69,7 +69,7 @@ function getCookie(c_name) {
     return "";
 }
 
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
     const token = getCookie('auth_token');
     if (token !== "") {
         window.location.href = '/test';
