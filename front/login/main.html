@@ -31,11 +31,11 @@
             </header>
             <div class="content">
                 <div class="description" id="description">
+                    <h2 style="text-align: center;">Инструкция</h2>
                     <p>Предположим, что после соответствующего обучения вы сможете выполнять любую работу, <br>
                         но если бы вам пришлось выбирать только из двух возможностей что бы вы предпочли? <br>
                         Отметьте в каждой из 20 пар предлагаемых видов деятельности наиболее предпочтительный для вас
                         вариант </p>
-                    <!-- TODO: смена текста на "Спасибо за пройденный тест" после прохождения-->
                 </div>
 
                 <div class="test-container">
@@ -52,6 +52,7 @@
                 <div class="results" id="results" hidden=true>
                     <h2>Ваши результаты</h2>
                     <div id="results-content"></div>
+                    <button onclick="downloadPDF()" style="display: none;" id="certbutton">Получить сертификат</button>
                     <!-- скрыть до момента выполнения теста -->
                 </div>
             </div>
@@ -62,7 +63,8 @@
         <div class="footer-container">
             <div class="footer-column">
                 <div class="footer-logo">
-                    <img src="Лого-ЗД-2048x553.png" alt="АГРОПРОМЫШЛЕННЫЙ ХОЛДИНГ ЗЕЛЕНАЯ ДОЛИНА" class="logo-img">
+                    <a href="https://zelenaya-dolina.com"><img src="Лого-ЗД-2048x553.png"
+                            alt="АГРОПРОМЫШЛЕННЫЙ ХОЛДИНГ ЗЕЛЕНАЯ ДОЛИНА" class="logo-img"></a>
                 </div>
                 <p class="footer-description">
                     Лидер агропромышленного комплекса с 1998 года
