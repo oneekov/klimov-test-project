@@ -111,3 +111,9 @@ function getCookie(c_name) {
     }
     return "";
 }
+window.addEventListener('DOMContentLoaded', function() {
+    const token = getCookie('auth_token');
+    if (token !== "") {
+        window.location.href = '/test';
+    }
+});

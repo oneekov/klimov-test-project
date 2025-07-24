@@ -15,7 +15,7 @@ function getCookie(name) {
 
 // Основная функция проверки авторизации
 function checkUserAuth() {
-    const token = getCookie('token');
+    const token = getCookie('auth_token');
 
     // Если токен отсутствует, вызываем logOut
     if (!token) {
@@ -51,7 +51,7 @@ function checkUserAuth() {
 }
 
 function checkMe() {
-    const token = getCookie('token');
+    const token = getCookie('auth_token');
     if (!token) {
         console.error('No token found');
         return Promise.reject('No token found');

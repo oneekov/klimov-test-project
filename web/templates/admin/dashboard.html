@@ -80,7 +80,7 @@
         document.addEventListener('DOMContentLoaded', async function () {
             // Получаем имя пользователя и фамилию из куки
             const url = '/api/me';
-            const token = getCookie('token');
+            const token = getCookie('auth_token');
             try {
                 const response = await fetch(url, {
                     method: 'GET',

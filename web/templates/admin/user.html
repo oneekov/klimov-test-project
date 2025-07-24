@@ -59,7 +59,7 @@
         }
 
         async function checkMe() {
-            const token = getCookie('token');
+            const token = getCookie('auth_token');
             const response = await fetch('/api/me', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -68,7 +68,7 @@
 
         async function fetchUser(userId) {
             try {
-                const token = getCookie('token');
+                const token = getCookie('auth_token');
                 const response = await fetch(`/api/admin/user/${userId}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -207,7 +207,7 @@
             const is_admin = document.getElementById('admin-checkbox').checked;
             const is_super_admin = document.getElementById('super-admin-checkbox').checked;
             
-            const token = getCookie('token');
+            const token = getCookie('auth_token');
             try {
                 const response = await fetch(`/api/admin/rights/${userId}`, {
                     method: 'PATCH',

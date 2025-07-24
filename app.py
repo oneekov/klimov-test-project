@@ -19,6 +19,11 @@ def serve_file(filename):
 def healthz():
     return {'status': 'ok'}
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'web', 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 # @app.route('/test/', defaults={'id': None})
 # @app.route('/test/<int:id>')
 # async def test(id):

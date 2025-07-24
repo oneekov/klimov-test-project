@@ -147,7 +147,7 @@
 
         // Функции экспорта
         async function exportToCSV() {
-            const token = getCookie('token');
+            const token = getCookie('auth_token');
             const gradeNumber = document.getElementById('gradeNumberFilter').value;
             const school = document.getElementById('schoolFilter').value;
             const professionType = document.getElementById('professionTypeFilter').value;
@@ -180,7 +180,7 @@
         }
 
         async function exportToExcel() {
-            const token = getCookie('token');
+            const token = getCookie('auth_token');
             const gradeNumber = document.getElementById('gradeNumberFilter').value;
             const school = document.getElementById('schoolFilter').value;
             const professionType = document.getElementById('professionTypeFilter').value;
@@ -218,7 +218,7 @@
 
         async function updateChart() {
             try {
-                const token = getCookie('token');
+                const token = getCookie('auth_token');
                 const gradeNumber = document.getElementById('gradeNumberFilter').value;
                 const school = document.getElementById('schoolFilter').value;
 
