@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Органическая графика</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @layer utilities {
+      .spin-slow { animation: spin 10s linear infinite; }
+      .gradient-org {
+        background: linear-gradient(to right, #377537, #378bc4, #26a38a);
+      }
+      @keyframes spin {
+        from { transform: rotate(var(--start-angle, 0deg)); }
+        to { transform: rotate(calc(360deg + var(--start-angle, 0deg))); }
+      }
+    }
+  </style>
+</head>
+<body class="relative overflow-x-hidden text-white min-h-screen">
+  <!-- Background gradient -->
+  <div class="fixed inset-0 gradient-org -z-10"></div>
+  <!-- Rotating cubes -->
+  <div class="fixed inset-0 -z-20" id="cubesContainer"></div>
+
+  <main class="relative z-10 flex flex-col items-start justify-center min-h-screen px-6 lg:px-24">
+    <!-- Logo -->
+    <div id="logo" class="w-32 h-32 bg-gradient-to-br from-blue-600 to-gray-50 rounded-2xl shadow-lg flex items-center justify-center mb-10 ml-auto">
+      <img src="./photo_2025-07-17_11-47-50-Photoroom.png" alt="logo" class="max-w-full max-h-full" />
+    </div>
+    <h1 class="text-5xl font-bold text-gray-100 drop-shadow-md mb-4">Тест на профориентацию</h1>
+    <p class="text-lg text-gray-200 mb-8 max-w-xl">Узнайте, какая профессия вам подходит больше всего!</p>
+    <!-- Button -->
+    <button onclick="goToTest()" class="ml-auto px-8 py-3 rounded-full border border-gray-300 bg-white/20 backdrop-blur-sm text-gray-200 font-semibold hover:bg-white/30 transform hover:translate-y-1 transition">
+      Пройти тест
+      <span class="inline-block transform rotate-45 border-r-2 border-b-2 border-gray-200 ml-2"></span>
+    </button>
+  </main>
+
+  <footer class="bg-gray-100 text-green-800 pt-10 pb-6 border-t-2 border-gray-300">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 px-6">
+      <div class="flex flex-col items-center md:items-start">
+        <img src="Лого-ЗД-2048x553.png" alt="АГРОПРОМЫШЛЕННЫЙ ХОЛДИНГ" class="h-20 mb-4 object-contain" />
+        <p class="text-gray-600">Лидер агропромышленного комплекса с 1998 года</p>
+      </div>
+      <div>
+        <h3 class="uppercase font-semibold mb-4 border-b-2 border-green-300 inline-block">Контакты</h3>
+        <ul class="space-y-2">
+          <li><a href="mailto:company@zdmail.ru" class="hover:text-green-600">company@zdmail.ru</a></li>
+          <li><a href="tel:+74722732390" class="hover:text-green-600">+7 (4722) 73-23-90</a></li>
+          <li><a href="tel:+74722732392" class="hover:text-green-600">+7 (4722) 73-23-92</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="uppercase font-semibold mb-4 border-b-2 border-green-300 inline-block">Адрес</h3>
+        <p class="text-gray-600">Россия, г. Белгород,<br>Проспект Славы, дом 28</p>
+      </div>
+      <div>
+        <h3 class="uppercase font-semibold mb-4 border-b-2 border-green-300 inline-block">Информация</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:text-green-600">Наша команда</a></li>
+          <li><a href="#" class="hover:text-green-600">Политика конфиденциальности</a></li>
+          <li><a href="#" class="hover:text-green-600">Список ресурсов</a></li>
+          <li><a href="#" class="hover:text-green-600">Вакансии</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-8 text-center text-sm text-green-500">© 2025 Агропромышленный холдинг "Зеленая Долина". Все права защищены.</div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('cubesContainer');
+      const logo = document.getElementById('logo');
+      const cubeCount = 6;
+      const rotationSpeed = 10;
+      const angleStep = 50;
+
+      function createCubes() {
+        container.innerHTML = '';
+        const rect = logo.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const maxDim = Math.min(window.innerWidth, window.innerHeight);
+        let size = maxDim * 0.3;
+
+        for (let i = 0; i < cubeCount; i++) {
+          const cube = document.createElement('div');
+          cube.style.setProperty('--start-angle', `${i * angleStep}deg`);
+          cube.className = 'absolute rounded-lg bg-gradient-to-br from-green-500 to-blue-500 shadow-lg mix-blend-screen opacity-80 spin-slow';
+          cube.style.width = `${size}px`;
+          cube.style.height = `${size}px`;
+          cube.style.left = `${centerX - size * 0.65}px`;
+          cube.style.top = `${centerY - size * 0.5}px`;
+          container.appendChild(cube);
+          size /= 1.2;
+        }
+      }
+
+      createCubes();
+      window.addEventListener('resize', createCubes);
+    });
+    function goToTest() { window.location.href = '/login'; }
+  </script>
+</body>
+</html>

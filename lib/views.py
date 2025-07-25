@@ -37,3 +37,11 @@ def login():
 @app.route('/register')
 def register():
     return render_template('reg.html')
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+@app.route('/')
+def index():
+    return render_template('index.html')
