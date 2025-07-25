@@ -1,4 +1,4 @@
-console.log(getCookie("token"))
+console.log(getCookie("gt\\"))
 
 const testData = {
     questions: [
@@ -481,7 +481,7 @@ function sendResultsToServer(results) {
             'Content-Type': 'application/json',
             //'Authorization': 'Bearer'
             // If you need to send a token, you can add it here:
-            'Authorization': 'Bearer ' + getCookie('token')
+            'Authorization': 'Bearer ' + getCookie('auth_token')
         },
         body: JSON.stringify({ "results": results })
     })
@@ -507,14 +507,63 @@ function showSubmitBtn(show) {
     }
 }
 
-function downloadPDF() {
-    // Здесь вы можете реализовать логику для скачивания PDF
-    // Например, используя библиотеку jsPDF или аналогичную
-    console.log("Скачивание сертификата...");
-    // Пример использования jsPDF:
-    /*
-    const doc = new jsPDF();
-    doc.text("Ваш сертификат", 10, 10);
-    doc.save("certificate.pdf");
-    */
+async function downloadPDF() {
+  // Получаем JWT из куки
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  };
+
+  const token = getCookie('auth_token');
+  if (!token) {
+    throw new Error('Authentication token not found in cookies');
+  }
+
+  try {
+    // Отправляем запрос с JWT в заголовке
+    const response = await fetch('/api/report/last', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      credentials: 'same-origin' // Для отправки куки с тем же origin
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to download report: ${response.status}`);
+    }
+
+    // Получаем файл как blob
+    const blob = await response.blob();
+    
+    // Извлекаем имя файла из заголовка Content-Disposition
+    const contentDisposition = response.headers.get('Content-Disposition');
+    let filename = 'report';
+    
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+      if (filenameMatch && filenameMatch[1]) {
+        filename = filenameMatch[1].replace(/['"]/g, '');
+      }
+    }
+
+    // Создаем ссылку для скачивания
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    
+    document.body.appendChild(a);
+    a.click();
+    
+    // Очистка
+    window.URL.revokeObjectURL(url);
+    a.remove();
+    
+  } catch (error) {
+    console.error('Download failed:', error);
+    throw error;
+  }
 }
