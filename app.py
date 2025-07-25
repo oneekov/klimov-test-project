@@ -23,7 +23,7 @@ def favicon():
 if __name__ == '__main__':
     with db.session() as session:
         if not (session.execute(select(exists().where(User.id==1)))).scalar():
-            root = User(id=1, username=ROOT_USER, password_hash=ROOT_PASSWORD_HASH, is_super_admin=True)
+            root = User(id=1, username=ROOT_USER, password_hash=ROOT_PASSWORD_HASH, is_super_admin=True, surname="Супер", name="Админ", patronymic="Великолепный")
             session.execute(text("SELECT setval('klimov.users_id_seq', 1)"))
             session.add(root)
             session.commit()
