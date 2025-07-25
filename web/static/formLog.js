@@ -34,7 +34,7 @@ document.getElementById('LogForm').addEventListener('submit', async (event) => {
         }
 
         console.log("Успешно! Ответ: " + JSON.stringify(result));
-        document.location.href = "/login/main.html";
+        document.location.href = "/test";
 
     } catch (error) {
         console.log("Ошибка: " + error.message);

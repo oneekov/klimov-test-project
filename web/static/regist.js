@@ -74,7 +74,7 @@ async function sendInfo() {
             createCookie('auth_token', result.token, 1);
         }
 
-        document.location.href = "./main.html";
+        document.location.href = "/test";
 
     } catch (error) {
         console.error('Error:', error);
